@@ -32,7 +32,6 @@ public class Program {
                 PingParser pingParser = new PingParser(isWindows());
 
                 averageResponse += pingParser.getResponseTime(reader);
-                System.out.println(averageResponse);
             }
             addresses.put(address, averageResponse / PING_COUNT);
         }
@@ -41,7 +40,18 @@ public class Program {
                                                         collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                                                                 (entry1, entry2) -> entry2, LinkedHashMap::new));
 
-        System.out.println(sortedAddressesByValue);
+        Set<String> setKeys = sortedAddressesByValue.keySet();
+        List<String> listKeys = new ArrayList<String>(setKeys);
+        Collections.reverse(listKeys);
+
+        System.out.println("Average response time:");
+        for(var key : listKeys){
+            if(addresses.get(key) < 0){
+                System.out.println("Failed to apply ping for DNS: " + key);
+                continue;
+            }
+            System.out.println(key + " - " + addresses.get(key));
+        }
     }
     private static boolean isWindows() {
         return System.getProperty("os.name").toLowerCase().startsWith("windows");
