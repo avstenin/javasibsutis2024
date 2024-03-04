@@ -18,7 +18,7 @@ public class PingParser {
     public double getResponseTime(BufferedReader reader) throws IOException {
         String line;
         Pattern pattern = isWindows ? Pattern.compile("=(\\d)*[^\\d\\s][^\\d\\s]"):
-                                      Pattern.compile("=(\\d)*\\sms");
+                                      Pattern.compile("=((\\d)*|((\\d)*\\..*))\\sms");
         Pattern digitPattern = Pattern.compile("(\\d)+");
         while ((line = reader.readLine()) != null) {
             try{
@@ -26,7 +26,7 @@ public class PingParser {
                 String valueFromLine = FindByPattern(digitPattern, msFromLine);
                 return Integer.parseInt(valueFromLine);
             }
-            catch (Exception ex){}
+            catch (Exception ex){ /* very bad code */ }
         }
         return -1;
     }
