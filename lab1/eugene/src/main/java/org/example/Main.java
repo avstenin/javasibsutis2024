@@ -1,4 +1,4 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.*;
 
@@ -21,13 +21,11 @@ public class Main
         int countOfPackages = validInput("How many pings per address?",scanner);
 
         pingAddresses(countOfDNS, countOfPackages, scanner, threads, pingChecker);
-
+        System.out.println("In progress...");
         joinThreads(threads);
 
         printSortedMap(mapOfIpAndAvarangeTime);
     }
-
-
 
     private static String getOSVersion() {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -55,8 +53,6 @@ public class Main
             }
         }
     }
-
-
 
     private static void printSortedMap(Map<String, Double> map) {
         System.out.println("List size: " + map.size());
