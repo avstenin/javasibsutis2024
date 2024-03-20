@@ -23,13 +23,19 @@ public class Lab2 {
             }
             if (choice == 1) {
                 List<String> files = new ArrayList<>();
-                FileManager.ReadJsonDirectory(new File("lab2/galetov/src"), files);
+                FileManager.ReadDirectory(new File("lab2/galetov/resources"), files);
+                System.out.println("Files found: " + files.size());
                 for(String file : files) {
                     System.out.println(file);
                 }
                 System.out.println("Enter the name of the file you want to read");
                 String fileName = input.next();
-                // read file
+                try{
+                    FileManager.ReadFile(fileName);
+                } catch (Exception e) {
+                    System.out.println("The file could not be opened");
+                }
+
             } else if (choice == 2) {
                 System.out.println("How many addresses do you want to enter?");
                 int dnsCount = 0;
@@ -59,7 +65,7 @@ public class Lab2 {
                 if(answer.equals("y")) {
                     System.out.println("Enter the name of the file you want to write to");
                     String fileName = input.next();
-                    //save to file
+                    FileManager.WriteAddressesInFile(addresses, fileName);
                 }
             } else if (choice == 3) {
                 running = false;
