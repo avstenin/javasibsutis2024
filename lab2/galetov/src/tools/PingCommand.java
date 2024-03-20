@@ -15,6 +15,18 @@ public class PingCommand {
 
         return reader;
     }
+
+    public static double getAverageResponseFromAddress(String address, int count) throws IOException {
+        BufferedReader reader;
+        PingParser pingParser = new PingParser(isWindows());
+        double averageTime = 0;
+        for (int i = 0; i < count; ++i) {
+            reader = getReaderFromAddress(address);
+            averageTime += pingParser.getResponseTime(reader);
+        }
+        return averageTime / count;
+    }
+
     public static boolean isWindows() {
         return System.getProperty("os.name").toLowerCase().startsWith("windows");
     }
