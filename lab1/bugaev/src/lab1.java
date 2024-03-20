@@ -9,7 +9,10 @@ public class lab1 {
         String str;   
         double sum;
         ping test = new ping();
+        System.out.println("Введите последовательно " + test.n + " ip-адреса");
         for(int i = 0; i < test.n; i++){
+            int count = i + 1;
+            System.out.println("Введите " + count + "-й ip-адрес");
             sum = 0;
             test.ip[i] = input.next();
             ProcessBuilder builder = new ProcessBuilder("sh", "-c", "ping " + test.ip[i] +" -c 3");
@@ -28,11 +31,11 @@ public class lab1 {
                 }
             }
             test.res[i] = sum / test.n;
-            System.out.println("res - " + test.res[i]);
+            System.out.println("Среднее время отклика - " + test.res[i]);     
         }
         test.buble_sort(test.res, test.ip);
         for (int i = 0; i < test.n; i++){
-            System.out.println("ip - " + test.ip[i] + " time - " + test.res[i]);
+            System.out.println("Ip - " + test.ip[i] + " Среднее время отклика - " + test.res[i]);
         }
     }
 }
