@@ -75,6 +75,5 @@ public class Lab3 {
                 throw new ChoiceException();
 
         }
-
     }
 }
