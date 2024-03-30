@@ -5,15 +5,14 @@ import java.util.Scanner;
 
 public class MacOS extends OS {
     @Override
-    public double ping(String s) throws IOException {
-        sendPing();
+    public double ping(String addr) throws IOException {
+        sendPing(addr);
         getPingResult();
         printPingResult();
         return averagePingTime;
     }
-    private void sendPing(){
-        Scanner scanner = new Scanner(System.in);
-        String[] command = {"ping", "-c", "3", scanner.nextLine()};
+    private void sendPing(String addr){
+        String[] command = {"ping", "-c", "3", addr};
         try {
             process = new ProcessBuilder(command).start();
         } catch (IOException e) {
