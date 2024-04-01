@@ -1,20 +1,15 @@
 package networks;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Network {
-    protected List<Operator> operators;
+    protected Map<Operator, List<Service>> operators;
+    protected Map<Service, List<Operator>> services;
 
     public Network(){
-        operators = new ArrayList<>();
-    }
-
-    public List<Operator> getOperators(){
-        return operators;
-    }
-
-    public void addOperator(Operator operator){
-        operators.add(operator);
+        operators = new HashMap<>();
+        services = new HashMap<>();
     }
 }
