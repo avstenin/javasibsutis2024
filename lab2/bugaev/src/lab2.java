@@ -18,7 +18,8 @@ public class lab2 {
         double sum;
         System.out.println("Введите количество DNS-серверов");
         ping test = new ping();
-        System.out.println("Введите последовательно " + test.n + " ip-адреса");
+        test.create_dir();
+        if (test.n > 0) System.out.println("Введите последовательно " + test.n + " ip-адреса");
         for(int i = 0; i < test.n; i++){
             int count = i + 1;
             System.out.println("Введите " + count + "-й ip-адрес");
@@ -47,8 +48,10 @@ public class lab2 {
             System.out.println("Ip - " + test.ip[i] + " Среднее время отклика - " + test.res[i]);
             test.res_and_ip.put(test.ip[i], test.res[i]);        
             //System.out.println(test.res_and_ip);
-            test.write_to_file(test.res_and_ip);
+            //test.write_to_file(test.res_and_ip, i);
         }
+
+        test.transition(test.res, test.ip, test.n);
 
     }
 }
@@ -76,14 +79,29 @@ class ping {
         }
     }    
 
-    void write_to_file( HashMap <String, Double> res_and_ip){
-        try(FileWriter writer = new FileWriter("zalupaaaaa.txt", false)){
-            String kal = "penis";
-            writer.write(kal);
-            writer.flush();
-
-        }catch (IOException ex){
-            System.out.println(ex.getMessage());
+    void transition(double [] mas1, String [] mas2, int n){
+        Object [][] result = new Object[n][3];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < 2; j++){
+                if (j == 1){
+                    result[i][j] = mas2[i];
+                }
+                if (j == 2){
+                    result[i][j] = mas1[i];
+                }
+            }
         }
     }
+
+    /*void create_dir(){
+        try{
+            ProcessBuilder build = new ProcessBuilder("sh","-c", "mkdir resourses");
+            build.command();
+            build.redirectErrorStream(true);
+            build.start();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }     
+    }*/
+
 }
