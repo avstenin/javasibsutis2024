@@ -16,9 +16,9 @@ public class lab2 {
         Scanner input = new Scanner(System.in);
         String str;   
         double sum;
-        System.out.println("Введите количество DNS-серверов");
+        //System.out.println("Введите количество DNS-серверов");
         ping test = new ping();
-        test.create_dir();
+        //test.create_dir();
         if (test.n > 0) System.out.println("Введите последовательно " + test.n + " ip-адреса");
         for(int i = 0; i < test.n; i++){
             int count = i + 1;
@@ -58,8 +58,8 @@ public class lab2 {
 class ping {
     Scanner input = new Scanner(System.in);
     
-    int n = input.nextInt();
-
+    //int n = input.nextInt();
+    int n =3;   
     public HashMap <String, Double> res_and_ip = new HashMap<>();
     public double [] res = new double[n];
     public String [] ip = new String[n];
