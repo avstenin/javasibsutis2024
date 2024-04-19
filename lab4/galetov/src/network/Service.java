@@ -1,4 +1,4 @@
-package networks;
+package network;
 
 public class Service {
     private String name = "";
@@ -10,7 +10,7 @@ public class Service {
     public String getName() {
         return name;
     }
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 }
