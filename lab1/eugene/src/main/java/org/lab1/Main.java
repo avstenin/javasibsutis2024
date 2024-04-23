@@ -1,4 +1,6 @@
-package main.java.org.example;
+package main.java.org.lab1;
+
+import main.java.org.lab2.utlis.PingChecker;
 
 import java.util.*;
 
