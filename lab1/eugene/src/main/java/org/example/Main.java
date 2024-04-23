@@ -4,10 +4,15 @@ import java.util.*;
 
 public class Main
 {
-    private static volatile Map<String, Double> mapOfIpAndAvarangeTime = new HashMap<>();
+    private static final Map<String, Double> mapOfIpAndAvarangeTime = new HashMap<>();
+
+
+
 
     public static void main(String[] args)
     {
+
+
         System.out.println("\u001B[31mPlease note: This program may require administrative privileges to perform certain actions. USE SUDO.\u001B[0m");
 
         List<Thread> threads = new ArrayList<>();
@@ -24,7 +29,7 @@ public class Main
         System.out.println("In progress...");
         joinThreads(threads);
 
-        printSortedMap(mapOfIpAndAvarangeTime);
+        printSortedMap();
     }
 
     private static String getOSVersion() {
@@ -54,10 +59,10 @@ public class Main
         }
     }
 
-    private static void printSortedMap(Map<String, Double> map) {
-        System.out.println("List size: " + map.size());
-        if (!map.isEmpty()) {
-            map.entrySet()
+    private static void printSortedMap() {
+        System.out.println("List size: " + Main.mapOfIpAndAvarangeTime.size());
+        if (!Main.mapOfIpAndAvarangeTime.isEmpty()) {
+            Main.mapOfIpAndAvarangeTime.entrySet()
                     .stream()
                     .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                     .forEachOrdered(x -> System.out.print("\nPING: " + x.getKey() + " " + "AverangeTime: " + x.getValue()));
@@ -68,7 +73,7 @@ public class Main
     private static void pingAddresses(int countOfDNS, int countOfPackages, Scanner scanner, List<Thread> threads, PingChecker pingChecker) {
         for (int i = 0; i < countOfDNS; i++) {
             System.out.println("Enter the DNS server address " + (i + 1) + ": ");
-            String inputIP = scanner.nextLine();
+            String inputIP = scanner.nextLine().trim();
             threads.add(new Thread(() -> {
                 if (pingChecker.checkPingAvailable(inputIP)) {
                     mapOfIpAndAvarangeTime.put(inputIP, pingChecker.getAveragePingTime(inputIP, countOfPackages));
@@ -76,9 +81,10 @@ public class Main
                     System.out.println("\u001B[31mERROR. Incorrectly specified IP address: " + inputIP +"\u001B[0m");
                 }
             }));
-            threads.getLast().start();
+            threads.get(threads.size() - 1).start();
         }
     }
+
     private static void joinThreads(List<Thread> threads) {
         threads.forEach(x -> {
             try {
