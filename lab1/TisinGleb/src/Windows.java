@@ -12,7 +12,7 @@ public class Windows extends OS {
         return averagePingTime;
     }
     private void sendPing(String addr){
-        String[] command = {"ping", "-n", "3", addr};
+        String[] command = {"ping", "-n", "1", addr};
         try {
             process = new ProcessBuilder(command).start();
         } catch (IOException e) {

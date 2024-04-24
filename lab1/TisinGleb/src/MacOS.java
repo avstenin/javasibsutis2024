@@ -12,7 +12,7 @@ public class MacOS extends OS {
         return averagePingTime;
     }
     private void sendPing(String addr){
-        String[] command = {"ping", "-c", "3", addr};
+        String[] command = {"ping", "-c", "1", addr};
         try {
             process = new ProcessBuilder(command).start();
         } catch (IOException e) {
