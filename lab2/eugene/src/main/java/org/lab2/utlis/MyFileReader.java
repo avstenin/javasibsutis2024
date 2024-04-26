@@ -25,7 +25,7 @@ public class MyFileReader
 
 
     private static void readFile(File file) {
-        System.out.println("\u001B[31mREAD FILE!!!\u001B[0m" );
+        System.out.println("\n\u001B[31mREAD FILE!!!\u001B[0m\n" );
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
             while (bufferedReader.ready())
             {
@@ -36,6 +36,6 @@ public class MyFileReader
             e.printStackTrace();
         }
 
-        System.out.println("\u001B[31mSTOP READ FILE!!!\u001B[0m" );
+        System.out.println("\n\u001B[31mSTOP READ FILE!!!\u001B[0m\n" );
     }
 }

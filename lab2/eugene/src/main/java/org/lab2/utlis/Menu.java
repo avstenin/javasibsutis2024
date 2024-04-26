@@ -1,9 +1,11 @@
 package main.java.org.lab2.utlis;
 
+import java.io.File;
 import java.util.*;
 
 public class Menu
 {
+    private int count;
     String nameOS;
     PingChecker pingChecker;
 
@@ -37,12 +39,18 @@ public class Menu
         while(true){
             switch (validInput(menuElement, scanner)){
                 case 1: startPing(scanner); break;
-                case 2: break; //TODO;
+                case 2: startRead(scanner); break;
                 case 3: sayBye(); return;
                 default:
                     System.out.println("Error.");
             }
         }
+    }
+
+    private void startRead(Scanner scanner){
+        System.out.println("Enter directory for scan. If you want to choose current directory, just press ENTER");
+        String directory = scanner.nextLine();
+        MyFileReader.recursiveRead(new File(Objects.equals(directory, "") ? System.getProperty("user.dir") : directory));
     }
 
     public void startPing(Scanner scanner){
@@ -56,6 +64,9 @@ public class Menu
 
         printSortedMap(mapOfIpAndAvarangeTime);
 
+
+        if (validInput("Do you want to save your result?\n1. Yes\n2. No", scanner) == 1)
+            MyFileSaver.save(mapOfIpAndAvarangeTime, "PingAverageTime" + count++);
     }
 
     private static String getOSVersion() {
@@ -107,7 +118,7 @@ public class Menu
                     System.out.println("\u001B[31mERROR. Incorrectly specified IP address: " + inputIP +"\u001B[0m");
                 }
             }));
-            threads.getLast().start();
+            threads.get(threads.size() - 1).start();
         }
     }
     private static void joinThreads(List<Thread> threads) {

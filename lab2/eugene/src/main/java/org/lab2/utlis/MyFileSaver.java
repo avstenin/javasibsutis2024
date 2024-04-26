@@ -24,7 +24,7 @@ public class MyFileSaver
             else if (object.getClass().isArray() && object instanceof String[][]){
                 for (String[] string : (String[][]) object) {
                     if (string[0] != null) {
-                        bufferedWriter.write(string[0] + " " + string[1]);
+                        bufferedWriter.write(string[0] + ": " + string[1]);
                         bufferedWriter.newLine();
                     }
 
