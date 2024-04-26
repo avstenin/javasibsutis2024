@@ -1,96 +1,38 @@
 package main.java.org.lab2;
 
+
+
+import main.java.org.lab2.utlis.MyFileReader;
+import main.java.org.lab2.utlis.MyFileSaver;
 import main.java.org.lab2.utlis.PingChecker;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 public class Main
 {
-    private static volatile Map<String, Double> mapOfIpAndAvarangeTime = new HashMap<>();
 
     public static void main(String[] args)
     {
-        System.out.println("\u001B[31mPlease note: This program may require administrative privileges to perform certain actions. USE SUDO.\u001B[0m");
+        PingChecker pingChecker = new PingChecker("windows");
+        Map<String, Double> map = new HashMap<>();
+        String[][] strings = new String[5][2];
+        strings[0][0] = "5.5.5.5";
+        strings[0][1] = "55";
+        strings[1][0] = "5.5.5.5";
+        strings[1][1] = "54";
 
-        List<Thread> threads = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        String osVersion = getOSVersion();
-        PingChecker pingChecker = new PingChecker(osVersion);
 
-        System.out.println("Hello, " + System.getProperty("user.name") + "!\nYour OS is -> " + osVersion);
+        int cnt = 0;
+        map.put("8.8.8.8", pingChecker.getAveragePingTime("8.8.8.8", 5));
+        map.put("1.1.1.1", pingChecker.getAveragePingTime("1.1.1.1", 5));
+        MyFileSaver.save(map, "PingAverageTime" + cnt++);
+        MyFileSaver.save(strings, "PingAverageTime" + cnt++);
 
-        int countOfDNS = validInput("How many addresses do you want to ping?", scanner);
-        int countOfPackages = validInput("How many pings per address?",scanner);
+        MyFileReader.recursiveRead(new File(System.getProperty("user.dir")));
 
-        pingAddresses(countOfDNS, countOfPackages, scanner, threads, pingChecker);
-        System.out.println("In progress...");
-        joinThreads(threads);
-
-        printSortedMap(mapOfIpAndAvarangeTime);
     }
-
-    private static String getOSVersion() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("win")) {
-            return "Windows";
-        } else if (osName.contains("mac")) {
-            return "Mac";
-        } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix") || osName.contains("hp-ux") || osName.contains("irix") || osName.contains("sunos")) {
-            return "Linux";
-        } else {
-            return "Unknown";
-        }
-    }
-
-    private static int validInput(String question, Scanner scanner){
-        int count;
-        while (true) {
-            System.out.println("\n" + question);
-            String input = scanner.nextLine();
-            try {
-                count = Integer.parseInt(input);
-                return count;
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
-            }
-        }
-    }
-
-    private static void printSortedMap(Map<String, Double> map) {
-        System.out.println("List size: " + map.size());
-        if (!map.isEmpty()) {
-            map.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
-                    .forEachOrdered(x -> System.out.print("\nPING: " + x.getKey() + " " + "AverangeTime: " + x.getValue()));
-            System.out.println(" <- THIS IS MINIMUM");
-        }
-    }
-
-    private static void pingAddresses(int countOfDNS, int countOfPackages, Scanner scanner, List<Thread> threads, PingChecker pingChecker) {
-        for (int i = 0; i < countOfDNS; i++) {
-            System.out.println("Enter the DNS server address " + (i + 1) + ": ");
-            String inputIP = scanner.nextLine();
-            threads.add(new Thread(() -> {
-                if (pingChecker.checkPingAvailable(inputIP)) {
-                    mapOfIpAndAvarangeTime.put(inputIP, pingChecker.getAveragePingTime(inputIP, countOfPackages));
-                } else {
-                    System.out.println("\u001B[31mERROR. Incorrectly specified IP address: " + inputIP +"\u001B[0m");
-                }
-            }));
-            threads.getLast().start();
-        }
-    }
-    private static void joinThreads(List<Thread> threads) {
-        threads.forEach(x -> {
-            try {
-                x.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-
 
 }
