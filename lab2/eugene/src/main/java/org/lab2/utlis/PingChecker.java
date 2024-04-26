@@ -9,7 +9,7 @@ public class PingChecker
     private final boolean FLAG;
 
     public PingChecker(String osName) {
-        FLAG = osName.contains("Win");
+        FLAG = osName.toLowerCase().contains("win");
     }
 
     public boolean checkPingAvailable(String addr){
