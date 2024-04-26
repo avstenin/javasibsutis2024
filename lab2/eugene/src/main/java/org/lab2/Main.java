@@ -1,16 +1,13 @@
 package main.java.org.lab2;
 
 
-
 import main.java.org.lab2.utlis.Menu;
 import main.java.org.lab2.utlis.MyFileReader;
 import main.java.org.lab2.utlis.MyFileSaver;
 import main.java.org.lab2.utlis.PingChecker;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
 
 public class Main
 {
@@ -32,7 +29,7 @@ public class Main
     private static void  testForArray(){
 
             System.out.println("WAIT.... THIS IS TEST FOR ARRAY");
-            PingChecker pingChecker = new PingChecker("windows");
+            PingChecker pingChecker = new PingChecker(System.getProperty("os.name").toLowerCase());
             String[][] strings = new String[5][2];
             strings[0][0] = "8.8.8.8";
             strings[0][1] = String.valueOf(pingChecker.getAveragePingTime("8.8.8.8", 5));

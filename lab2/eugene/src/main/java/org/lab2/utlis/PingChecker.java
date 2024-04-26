@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+
 public class PingChecker
 {
     private final boolean FLAG;
@@ -21,6 +22,7 @@ public class PingChecker
             return false;
         }
     }
+
 
     private Double winSplit(String line){
         return Double.parseDouble(line.split("=")[2].replaceAll("\\D+", ""));
