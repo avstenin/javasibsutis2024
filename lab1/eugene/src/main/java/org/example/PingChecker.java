@@ -3,23 +3,22 @@ package main.java.org.example;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
+
 public class PingChecker
 {
-    private final int TIMEOUT = 3000;
-
     private final boolean FLAG;
 
     public PingChecker(String osName) {
-        FLAG = osName.contains("Win");
+        FLAG = osName.toLowerCase().contains("win");
     }
 
-    public boolean checkPingAvailable(String addr){
-        try
-        {
-            InetAddress address = InetAddress.getByName(addr); // на linux или macOS запускать с SUDO!!
-            return address.isReachable(TIMEOUT);
-        } catch (IOException exc){
+    public boolean checkPingAvailable(String addr) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("ping", FLAG ? "-n" : "-c", "1", addr);
+            Process proc = processBuilder.start();
+            int returnVal = proc.waitFor();
+            return returnVal == 0;
+        } catch (IOException | InterruptedException e) {
             return false;
         }
     }
@@ -35,11 +34,7 @@ public class PingChecker
     public double getAveragePingTime(String ipAddress, int pingCount)
     {
         double averagePingTime = 0;
-        ProcessBuilder processBuilder = FLAG ?
-                new ProcessBuilder("cmd.exe", "/c", "ping", ipAddress, "-n", String.valueOf(pingCount))
-                :
-                new ProcessBuilder("ping", ipAddress, "-c", String.valueOf(pingCount));
-
+        ProcessBuilder processBuilder = new ProcessBuilder("ping", FLAG ? "-n" : "-c", String.valueOf(pingCount), ipAddress);
         try(BufferedReader r =
                     new BufferedReader(
                             new InputStreamReader(
