@@ -1,4 +1,4 @@
-package main.java.org.example;
+package main.java.org.lab1;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package main.java.org.example;
+package main.java.org.lab2.utlis;
 
 import java.io.BufferedReader;
 import java.io.IOException;
