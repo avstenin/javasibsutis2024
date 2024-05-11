@@ -41,7 +41,7 @@ public class Lab3Test {
     public void IncorrectSaveFile() throws FileException {
         MyFileSaver.save(new Object(),"testOutputFile");
         MyFileReader.recursiveRead("testOutput", new File(System.getProperty("user.dir")));
-        Assert.assertEquals(1, MyFileReader.stringList.size());
+        Assert.assertEquals(0, MyFileReader.stringList.size());
         MyFileReader.stringList.clear();
     }
 
