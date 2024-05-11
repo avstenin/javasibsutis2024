@@ -4,14 +4,23 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
 
 public class MyFileSaver
 {
-    public static void save(Object object, String filename) {
+    public static void save(Object object, String filename)
+    {
         boolean isItGlobalHistory = filename.contains("globalHistory");
 
-        String prefix = MyFileReader.findDir(new File(System.getProperty("user.dir")), "output");
+        String prefix = "";
+        try{
+            prefix = MyFileReader.findDir(new File(System.getProperty("user.dir")), "output");
+        }
+        catch (Exception e){
+            System.out.println("Directory not found!");
+            return;
+        }
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(prefix + "\\" +  filename + ".txt", isItGlobalHistory))) {
             if (isItGlobalHistory) {

@@ -58,15 +58,18 @@ public class Menu
         }
     }
 
-    private void checkFileFromDirectory(){
-        startRead("Out");
+    private void checkFileFromDirectory()
+    {
+        startRead("out");
         MyFileReader.stringList.forEach(System.out::println);
     }
 
     private void checkGlobalHistory() {
         try
         {
-            MyFileReader.readFile(new File(System.getProperty("user.dir") + "\\lab3\\eugene\\src\\main\\java\\org\\lab3\\bin\\output\\globalHistory"));
+            var fileDir = MyFileReader.findDir(new File(System.getProperty("user.dir")), "output");
+
+            MyFileReader.readFile(new File(fileDir + "\\globalHistory.txt"));
             MyFileReader.stringList.forEach(System.out::println);
         }
         catch (FileException e) {
@@ -82,16 +85,21 @@ public class Menu
         }
     }
 
-    private void startRead(String regime){
+    private void startRead(String regime) {
         System.out.println("Enter directory for scan. If you want to choose current directory, just press ENTER");
         String directory = scanner.nextLine();
 
         var curr = System.getProperty("user.dir");
-        directory = !directory.isEmpty() ? MyFileReader.findDir(new File(curr), directory) : curr;
 
         try
         {
-            MyFileReader.recursiveRead(regime, new File(directory));
+            if (directory.isEmpty()){
+                MyFileReader.recursiveRead(regime, new File(curr));
+            }
+            else{
+                var t = MyFileReader.findDir(new File(curr), directory);
+                MyFileReader.recursiveRead(regime, new File(t));
+            }
         }
         catch (FileException fileNotFoundException){
             System.out.println("Directory not found! Try again!");
@@ -100,8 +108,7 @@ public class Menu
     }
 
 
-    private void startPing()
-    {
+    private void startPing() {
         List<Thread> threads = new ArrayList<>();
         String regimeOutput = "KeyboardOutput";
         if (validInput("1. From File\n2. From keyboard") == 1)

@@ -22,20 +22,36 @@ public class MyFileReader {
             for (var file : files)
             {
                 if (file.getName().charAt(0) == '.') continue;
-                if (file.isDirectory() && !file.getName().equals("out")) {
+                if (file.isDirectory() && !file.getName().equals("target") &&!file.getName().equals("out")) {
                     recursiveRead(regime, file);
-                } else if (file.getName().toLowerCase().contains(regime.toLowerCase())) {
-                    readFile(file);
                 }
+                if (file.getAbsolutePath().contains("lab3"))
+                {
+                    var lowerCaseFileName = file.getName().toLowerCase();
+                    var lowerCaseRegime = regime.toLowerCase();
+                    var path = "lab3\\bin\\";
+
+                        if (
+                                lowerCaseFileName.contains(".txt") &&
+                                lowerCaseFileName.contains(lowerCaseRegime) &&
+                                file.getAbsolutePath().toLowerCase().contains(path + lowerCaseRegime)
+                        )
+                        {
+                            readFile(file);
+                        }
+                }
+
             }
         }
     }
 
-    public static void readFile(File file) throws FileException {
+    public static void readFile(File file) throws FileException
+    {
         stringList.add("\n" + file.getName());
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null)
+            {
                 stringList.add(line);
             }
         } catch (IOException e) {
@@ -43,7 +59,17 @@ public class MyFileReader {
         }
     }
 
-    public static String findDir(File root, String name)
+    public static String findDir(File root, String name) throws FileException
+    {
+        String res = find(root, name);
+        if (res == null){
+            throw new FileException("Directory not found");
+        }
+        return res;
+    }
+
+
+    private static String find(File root, String name)
     {
         if (root.getName().equals(name))
         {
@@ -58,7 +84,7 @@ public class MyFileReader {
             {
                 if(f.isDirectory())
                 {
-                    String myResult = findDir(f, name);
+                    String myResult = find(f, name);
                     if (myResult != null) {
                         return myResult;
                     }
