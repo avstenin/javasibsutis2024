@@ -1,8 +1,6 @@
-package main.java.org.lab3.utlis;
+package org.lab3.utlis;
 
-import main.java.org.lab3.exceptions.FileException;
-import main.java.org.lab3.exceptions.IpException;
-import main.java.org.lab3.exceptions.ParseException;
+import org.lab3.exceptions.*;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -87,9 +85,13 @@ public class Menu
     private void startRead(String regime){
         System.out.println("Enter directory for scan. If you want to choose current directory, just press ENTER");
         String directory = scanner.nextLine();
+
+        var curr = System.getProperty("user.dir");
+        directory = !directory.isEmpty() ? MyFileReader.findDir(new File(curr), directory) : curr;
+
         try
         {
-            MyFileReader.recursiveRead(regime, new File(Objects.equals(directory, "") ? System.getProperty("user.dir") : directory));
+            MyFileReader.recursiveRead(regime, new File(directory));
         }
         catch (FileException fileNotFoundException){
             System.out.println("Directory not found! Try again!");
@@ -123,7 +125,7 @@ public class Menu
 
             String formattedDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 
-            String fileName = regimeOutput + "_" + formattedDate + count++ + ".txt";
+            String fileName = regimeOutput + "_" + formattedDate + count++;
 
             MyFileSaver.save(mapOfIpAndAverageTime, fileName);
         }
@@ -145,7 +147,7 @@ public class Menu
         threads.get(threads.size() - 1).start();
     }
 
-    private void pingFromFileInput(List<Thread> threads) throws ParseException
+    private void pingFromFileInput(List<Thread> threads) throws ParseException, ArrayIndexOutOfBoundsException
     {
         try{
             for (String line : MyFileReader.stringList) {
@@ -154,9 +156,9 @@ public class Menu
                 createPingThread(threads, out[0], Integer.parseInt(out[1]), pingChecker);
             }
         }
-        catch (ParseException e)
+        catch (ParseException | ArrayIndexOutOfBoundsException e)
         {
-            System.out.println("\u001BError. Change file format.\u001B[0m");
+            System.out.println("\u001B[31mError. Change file format.\u001B[0m");
         }
 
     }

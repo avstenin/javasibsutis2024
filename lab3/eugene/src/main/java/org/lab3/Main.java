@@ -1,7 +1,9 @@
-package main.java.org.lab3;
+package org.lab3;
 
 
-import main.java.org.lab3.utlis.Menu;
+import org.lab3.utlis.Menu;
+
+import java.net.URL;
 
 public class Main
 {

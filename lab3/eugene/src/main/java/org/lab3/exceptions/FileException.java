@@ -1,4 +1,4 @@
-package main.java.org.lab3.exceptions;
+package org.lab3.exceptions;
 
 import java.io.IOException;
 

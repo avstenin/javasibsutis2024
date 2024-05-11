@@ -1,6 +1,7 @@
-package main.java.org.lab3.utlis;
+package org.lab3.utlis;
 
-import main.java.org.lab3.exceptions.IpException;
+
+import org.lab3.exceptions.IpException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class PingChecker
             averagePingTime = FLAG ? winSplit(lastLine) : otherSplit(lastLine);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return -1;
         }
         return averagePingTime;
     }
