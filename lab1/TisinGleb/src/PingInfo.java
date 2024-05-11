@@ -2,9 +2,9 @@ public class PingInfo{
     PingInfo(String ip, double time){
         //нет инварианта
         this.ip = ip;
-        this.averageTime = time;
+        this.time = time;
     }
     public String ip;
-    public double averageTime;
-    public double getAverageTime(){return averageTime;}
+    public double time;
+    public double getAverageTime(){return time;}
 }

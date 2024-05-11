@@ -7,11 +7,10 @@ public class Linux extends OS{
     public double ping(String addr) throws IOException {
        sendPing(addr);
        getPingResult();
-       printPingResult();
        return averagePingTime;
     }
     private void sendPing(String addr){
-        String[] command = {"ping", "-c", "3", addr};
+        String[] command = {"ping", "-c", "1", addr};
         try {
             process = new ProcessBuilder(command).start();
         } catch (IOException e) {
