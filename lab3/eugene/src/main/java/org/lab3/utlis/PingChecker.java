@@ -1,4 +1,7 @@
-package main.java.org.lab1;
+package org.lab3.utlis;
+
+
+import org.lab3.exceptions.IpException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,13 +15,19 @@ public class PingChecker
         FLAG = osName.toLowerCase().contains("win");
     }
 
-    public boolean checkPingAvailable(String addr) {
-        try {
+    public boolean checkPingAvailable(String addr) throws IpException
+    {
+        try
+        {
             ProcessBuilder processBuilder = new ProcessBuilder("ping", FLAG ? "-n" : "-c", "1", addr);
             Process proc = processBuilder.start();
             int returnVal = proc.waitFor();
-            return returnVal == 0;
-        } catch (IOException | InterruptedException e) {
+            if (returnVal == 0){
+                return true;
+            }
+            throw new IpException("\u001B[31mERROR. Incorrectly specified IP address: " + addr +"\u001B[0m");
+        }
+        catch (IOException | InterruptedException e) {
             return false;
         }
     }
@@ -50,7 +59,7 @@ public class PingChecker
             averagePingTime = FLAG ? winSplit(lastLine) : otherSplit(lastLine);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return -1;
         }
         return averagePingTime;
     }
