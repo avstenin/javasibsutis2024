@@ -1,0 +1,19 @@
+MTS
+type: mobile
+services and coast:adBlock 500, ParentControl 1000, Netflix 1500, 5G 1500, 4G 1000, 3G 500
+
+Rostelecom
+type: cable
+services and coast:adBlock 3000, ParentControl 5000, 1000mb/s 3000, 500mb/s 1500
+
+MTS
+type: cable
+services and coast:adBlock 500, ParentControl 1000, Netflix 1500, 500mb/s 1000, 250mb/s 500, 100ms/s 250
+
+Tele2
+type: mobile
+services and coast:adBlock 250, ParentControl 999, 4G 500, 3G 500
+
+Yota
+type: mobile
+services and coast:adBlock 100, ParentControl 500, 4G 600, 3G 200
