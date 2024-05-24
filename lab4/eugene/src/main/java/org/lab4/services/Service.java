@@ -1,6 +1,7 @@
 package org.lab4.services;
 
-public class Service {
+public class Service
+{
     private final String NAME;
 
     private final int COAST;

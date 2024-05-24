@@ -24,18 +24,82 @@ public class Menu
 
     public void userChoice()
     {
-        sortByCost();
         while (true){
             printContext();
             switch (scanner.nextLine())
             {
-                case "1": printByRegime(true); break;
-                case "2" : printByRegime(false); break;
+                case "1": getProvidersByService();  break;
+                case "2" : getServiceByProvider();break;//printByRegime(false); break;
                 case "3" : printAllTable(); break;
                 case "4" :  System.out.println("Bye! " + System.getProperty("user.name")); return;
             }
         }
     }
+
+    public void getProvidersByService()
+    {
+        System.out.println("Какая услуга вас заинтересовала?");
+        String key = scanner.nextLine();
+        Map<Provider, Integer> map = new HashMap<>();
+        for (var i : providersList)
+        {
+            var find = i.getServiceByKey(key);
+            if (find != null){
+                map.put(i, find.getCoast());
+            }
+        }
+
+        if (map.isEmpty()){
+            System.out.println("Такой услуги не существует!");
+            return;
+        }
+        printUpTable();
+        map.entrySet().stream().sorted(Map.Entry.comparingByValue()).
+                forEach(x-> System.out.printf("%-14s | %-10s | %-15s | %-10d\n", x.getKey().getNetworkType().getClass().getSimpleName(),
+                        x.getKey().getName(),
+                        key.toUpperCase(),
+                        x.getValue()));
+        printLine();
+    }
+
+    private void getServiceByProvider()
+    {
+        System.out.println("Какой оператор вас заинтересовал?");
+        String key = scanner.nextLine();
+        List<Service> lst = new ArrayList<>();
+        for (var i : providersList){
+            if (i.getName().equalsIgnoreCase(key)){
+                lst.addAll(i.getServiceList());
+            }
+        }
+        if (lst.isEmpty()){
+            System.out.println("Такого оператора не существует!");
+            return;
+        }
+        lst.sort(Comparator.comparingInt(Service::getCoast));
+        printUpTable();
+        boolean f = false;
+        for (var provider : providersList)
+        {
+            for (var service : lst)
+            {
+                var simpleNetworkTypeName = provider.getNetworkType().getClass().getSimpleName();
+                if (provider.getServiceList().contains(service) && simpleNetworkTypeName.equalsIgnoreCase("mobile")){
+                    System.out.printf("%-14s | %-10s | %-15s | %-10d\n", simpleNetworkTypeName, provider.getName(), service.getName(), service.getCoast());
+                }
+                else if (provider.getServiceList().contains(service) && simpleNetworkTypeName.equalsIgnoreCase("cable")){
+                    if (!f) { printLine(); f = true; }
+                    System.out.printf("%-14s | %-10s | %-15s | %-10d\n", simpleNetworkTypeName, provider.getName(), service.getName(), service.getCoast());
+                }
+            }
+
+        }
+        printLine();
+
+
+    }
+
+
 
 
     private void printContext(){
@@ -45,93 +109,7 @@ public class Menu
         System.out.println("4. Выход");
     }
 
-    private List<Provider> getValueInOperatorList(String value)
-    {
-        List<Provider> checkList = new ArrayList<>();
-        for (var provider : providersList) {
-            if (provider.getName().equalsIgnoreCase(value)) checkList.add(provider);
-        }
-        return checkList;
-    }
 
-    private List<Service> getValueInServiceList(String value)
-    {
-        List<Service> checkList = new ArrayList<>();
-        for (var provider : providersList) {
-            for(var i : provider.getServiceList())
-            {
-                if (i.getName().equalsIgnoreCase(value)) {
-                    checkList.add(i);
-                }
-            }
-        }
-        return checkList;
-    }
-
-
-    private void printProviderTable(List<Provider> checkList)
-    {
-        for (var provider : checkList)
-        {
-            for (var service : provider.getServiceList()) {
-                System.out.printf("%-14s | %-10s | %-15s | %-10d\n", provider.getNetworkType().getClass().getSimpleName(), provider.getName(), service.getName(), service.getCoast());
-            }
-            System.out.println();
-        }
-    }
-
-
-
-    private void printServiceTable(List<Service> checkList) {
-        checkList.sort(Comparator.comparingInt(Service::getCoast));
-        Map<Provider, List<Service>> providerServiceMap = new HashMap<>();
-        for (var provider : providersList) {
-            providerServiceMap.put(provider, new ArrayList<>());
-            for (var service : checkList) {
-                if (provider.getServiceList().contains(service)) {
-                    providerServiceMap.get(provider).add(service);
-                }
-            }
-        }
-        for (var entry : providerServiceMap.entrySet()) {
-            var provider = entry.getKey();
-            var services = entry.getValue();
-            for (var service : services) {
-                System.out.printf("%-14s | %-10s | %-15s | %-10d\n", provider.getNetworkType().getClass().getSimpleName(), provider.getName(), service.getName(), service.getCoast());
-            }
-            //System.out.println();
-        }
-    }
-
-    public void printByRegime(boolean regime)
-    {
-        System.out.println(regime ? ("Какая услуга вас заинтересовала?") : ("Какой провайдер вас заинтересовал?"));
-
-        var choice = scanner.nextLine();
-
-
-        var checkList = !regime ? getValueInOperatorList(choice) : getValueInServiceList(choice);
-
-        if (checkList.isEmpty()){
-            System.out.println( regime ? ("Такой услуги не существует!") : ("Такого провайдера не существует!"));
-            return;
-        }
-
-        printUpTable();
-        if (regime) {
-            printServiceTable((List<Service>) checkList);
-        } else {
-            printProviderTable((List<Provider>) checkList);
-        }
-        printLine();
-    }
-
-    private void sortByCost(){
-        for (Provider provider : providersList)
-        {
-            provider.getServiceList().sort(Comparator.comparingInt(Service::getCoast));
-        }
-    }
 
 
 
@@ -169,7 +147,6 @@ public class Menu
         printAllTable("Cable");
         printAllTable("Mobile");
         printLine();
-
     }
 
 

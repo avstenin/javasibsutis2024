@@ -3,7 +3,6 @@ package org.lab4.providers;
 import org.lab4.network.Network;
 import org.lab4.services.Service;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class Provider
@@ -20,10 +19,6 @@ public class Provider
         this.serviceList = serviceList;
     }
 
-    public void sortServiceList(){
-        serviceList.sort(Comparator.comparingInt(Service::getCoast));
-    }
-
     public Network getNetworkType() {
         return networkType;
     }
@@ -34,6 +29,16 @@ public class Provider
 
     public List<Service> getServiceList() {
         return serviceList;
+    }
+
+    public Service getServiceByKey(String serviceName)
+    {
+        for (var i : serviceList){
+            if (i.getName().equalsIgnoreCase(serviceName)){
+                return i;
+            }
+        }
+        return null;
     }
 
     @Override
