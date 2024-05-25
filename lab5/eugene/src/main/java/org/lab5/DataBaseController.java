@@ -72,6 +72,16 @@ public class DataBaseController {
         }
     }
 
+    public void deleteByID(Connection connection, String tableName, int id){
+        try{
+            connection.createStatement().executeUpdate(String.format("DELETE FROM %s where CONTACT_ID = '%d'", tableName, id));
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     private void printTable(ResultSet resultSet) {
         try {
             System.out.printf("%-5s | %-10s | %-15s | %-10s | %-10s\n", "ID", "FIRST_NAME", "SECOND_NAME", "PHONE", "EMAIL");

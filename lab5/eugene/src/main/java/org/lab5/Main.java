@@ -2,6 +2,7 @@ package org.lab5;
 
 import java.sql.Connection;
 import java.util.Scanner;
+import java.util.Timer;
 
 public class Main {
 
@@ -34,6 +35,9 @@ public class Main {
                             searchByKey(scanner, dataBaseController, connection, tableName);
                             break;
                         case "6":
+                            getDeleteId(scanner, dataBaseController, connection, tableName);
+                            break;
+                        case "7":
                             running = false;
                             break;
                         default:
@@ -55,7 +59,8 @@ public class Main {
         System.out.println("3. Read all data");
         System.out.println("4. Update row");
         System.out.println("5. Search by key");
-        System.out.println("6. Exit");
+        System.out.println("6. Delete by ID");
+        System.out.println("7. Exit");
     }
 
     private static void insertRow(Scanner scanner, DataBaseController dataBaseController, Connection connection, String tableName) {
@@ -90,6 +95,22 @@ public class Main {
             String newValue = scanner.nextLine();
             dataBaseController.updateRow(connection, tableName, id, param, newValue);
         }
+    }
+
+    private static void getDeleteId(Scanner scanner, DataBaseController dataBaseController, Connection connection, String tableName)
+    {
+        while (true){
+            System.out.println("What row with ID do you want to delete?");
+            try{
+                int id = Integer.parseInt(scanner.nextLine());
+                dataBaseController.deleteByID(connection, tableName, id);
+                return;
+            }
+            catch (Exception e){
+                System.out.println("Invalid! Enter INTEGER");
+            }
+        }
+
     }
 
     private static String getUpdateParam(Scanner scanner) {
